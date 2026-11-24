@@ -61,6 +61,7 @@ mod platform;
 #[cfg(not(target_family = "wasm"))]
 mod qr_login;
 mod sections;
+mod todo;
 mod types;
 mod verification_flow;
 mod video_meta;
@@ -68,6 +69,7 @@ mod video_meta;
 mod wasm_bridge;
 
 pub use core::{CoreClient, TimelineManager};
+pub use todo::*;
 pub use types::*;
 
 use errors::{IntoFfi, OptionFfi, ffi_err};

@@ -1594,3 +1594,58 @@ impl<T> Drop for TokioDrop<T> {
         drop(self.0.take());
     }
 }
+
+// ============ Todo List Types ============
+
+#[derive(Clone, Serialize, Deserialize, Record)]
+pub struct TodoListMetadata {
+    pub name: String,
+    pub description: Option<String>,
+    pub created_at_ms: u64,
+    pub created_by: String,
+    pub color: Option<String>,
+    pub is_public: bool,
+}
+
+#[derive(Clone, Serialize, Deserialize, Record)]
+pub struct TodoItem {
+    pub id: String,
+    pub text: String,
+    pub completed: bool,
+    pub created_at_ms: u64,
+    pub created_by: String,
+    pub due_date: Option<String>,
+    pub priority: Option<String>,
+    pub tags: Option<Vec<String>>,
+}
+
+#[derive(Clone, Serialize, Deserialize, Record)]
+pub struct TodoToggle {
+    pub item_id: String,
+    pub completed: bool,
+    pub toggled_at_ms: u64,
+    pub toggled_by: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, Record)]
+pub struct TodoDelete {
+    pub item_id: String,
+    pub deleted_at_ms: u64,
+    pub deleted_by: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, Record)]
+pub struct TodoEdit {
+    pub item_id: String,
+    pub text: String,
+    pub edited_at_ms: u64,
+    pub edited_by: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, Record)]
+pub struct TodoRoom {
+    pub room_id: String,
+    pub room_name: String,
+    pub metadata: Option<TodoListMetadata>,
+    pub todos: Vec<TodoItem>,
+}

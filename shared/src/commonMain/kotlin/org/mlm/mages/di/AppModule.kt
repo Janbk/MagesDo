@@ -15,6 +15,7 @@ import org.mlm.mages.emoji.RecentEmojiStore
 import org.mlm.mages.notifications.SpaceNotificationScopeStore
 import org.mlm.mages.settings.AppSettings
 import org.mlm.mages.ui.components.snackbar.SnackbarManager
+import org.mlm.mages.todo.TodoViewModel
 import org.mlm.mages.ui.viewmodel.*
 import org.mlm.mages.wallpaper.WallpaperStore
 import org.mlm.mages.verification.VerificationCoordinator
@@ -48,6 +49,8 @@ val viewModelModule = module {
     }
 
     viewModel { RoomsViewModel(get()) }
+
+    viewModel { TodoViewModel(get()) }
 
     viewModel { SecurityViewModel(get(), get(), get()) }
 

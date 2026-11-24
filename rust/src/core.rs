@@ -78,7 +78,8 @@ use crate::{
     RoomSummary, RoomTags, RoomUpgradeLinks, RoomHeroInfo, SearchHit, SearchPage, SeenByEntry,
     SendState,
     SendUpdate, SpaceChildInfo, SpaceHierarchyPage, SpaceInfo, SpaceParentInfo, SpaceSection,
-    SpaceUnread, SuccessorRoomInfo, ThreadSummary, ThreadUnreadCount, UnreadStats,
+    SpaceUnread, SuccessorRoomInfo, ThreadSummary, ThreadUnreadCount, TodoDelete, TodoEdit, TodoItem,
+    TodoListMetadata, TodoRoom, TodoToggle, UnreadStats,
     VerificationInboxObserver, build_unstable_poll_content, latest_room_event_for,
     map_event_id_via_timeline, map_timeline_event, map_timeline_item,
     paginate_backwards_visible, search_hit_from_event, timeline_event_filter,
@@ -6025,6 +6026,94 @@ impl CoreClient {
             });
         }
         snapshot
+    }
+
+    // ============ Todo List Methods ============
+
+    /// Create a new todo list room
+    pub async fn create_todo_room(
+        &self,
+        name: String,
+        description: Option<String>,
+    ) -> Result<String, FfiError> {
+        let user_id = self.sdk.user_id().ok_or(FfiError::Msg("Not logged in".into()))?;
+        crate::todo::create_todo_room(&self.sdk, name, description, user_id).await
+    }
+
+    /// Get todo list metadata from a room
+    pub async fn get_todo_list_metadata(
+        &self,
+        room_id: String,
+    ) -> Result<Option<TodoListMetadata>, FfiError> {
+        crate::todo::get_todo_list_metadata(&self.sdk, &room_id).await
+    }
+
+    /// Add a new todo item to a room
+    pub async fn add_todo_item(
+        &self,
+        room_id: String,
+        text: String,
+    ) -> Result<TodoItem, FfiError> {
+        let user_id = self.sdk.user_id().ok_or(FfiError::Msg("Not logged in".into()))?;
+        crate::todo::add_todo_item(&self.sdk, &room_id, text, user_id).await
+    }
+
+    /// Toggle todo item completion status
+    pub async fn toggle_todo_item(
+        &self,
+        room_id: String,
+        item_id: String,
+        completed: bool,
+        original_event_id: Option<String>,
+    ) -> Result<(), FfiError> {
+        let user_id = self.sdk.user_id().ok_or(FfiError::Msg("Not logged in".into()))?;
+        crate::todo::toggle_todo_item(&self.sdk, &room_id, item_id, completed, user_id, original_event_id).await
+    }
+
+    /// Delete a todo item
+    pub async fn delete_todo_item(
+        &self,
+        room_id: String,
+        item_id: String,
+        original_event_id: Option<String>,
+    ) -> Result<(), FfiError> {
+        let user_id = self.sdk.user_id().ok_or(FfiError::Msg("Not logged in".into()))?;
+        crate::todo::delete_todo_item(&self.sdk, &room_id, item_id, user_id, original_event_id).await
+    }
+
+    /// Edit a todo item
+    pub async fn edit_todo_item(
+        &self,
+        room_id: String,
+        item_id: String,
+        new_text: String,
+        original_event_id: Option<String>,
+    ) -> Result<(), FfiError> {
+        let user_id = self.sdk.user_id().ok_or(FfiError::Msg("Not logged in".into()))?;
+        crate::todo::edit_todo_item(&self.sdk, &room_id, item_id, new_text, user_id, original_event_id).await
+    }
+
+    /// Load all todo items from a room
+    pub async fn load_todo_items(
+        &self,
+        room_id: String,
+    ) -> Result<Vec<TodoItem>, FfiError> {
+        crate::todo::load_todo_items(&self.sdk, &room_id).await
+    }
+
+    /// Load a todo room with its metadata and items
+    pub async fn load_todo_room(
+        &self,
+        room_id: String,
+    ) -> Result<TodoRoom, FfiError> {
+        crate::todo::load_todo_room(&self.sdk, &room_id).await
+    }
+
+    /// Get all joined rooms that are todo list rooms
+    pub async fn get_todo_rooms(
+        &self,
+    ) -> Result<Vec<TodoRoom>, FfiError> {
+        crate::todo::get_todo_rooms(&self.sdk).await
     }
 }
 

@@ -46,6 +46,7 @@ fun DesktopChatHost(
     onOpenSpaces: () -> Unit,
     onOpenSearch: () -> Unit,
     onOpenAccountSwitcher: () -> Unit,
+    onOpenTodoList: () -> Unit,
     onOpenJoinPreview: (String, Boolean) -> Unit,
     detailViewModelStoreOwner: ViewModelStoreOwner,
     roomListPercent: Int = 40,
@@ -68,6 +69,7 @@ fun DesktopChatHost(
                     onOpenSearch = onOpenSearch,
                     onOpenAccountSwitcher = onOpenAccountSwitcher,
                     onOpenJoinPreview = onOpenJoinPreview,
+                    onOpenTodoList = onOpenTodoList,
                 )
             }
         } else {
