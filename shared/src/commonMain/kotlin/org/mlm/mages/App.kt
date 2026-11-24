@@ -734,6 +734,7 @@ private fun AppContent(
                                     onOpenSpaces = { backStack.add(Route.Spaces) },
                                     onOpenSearch = { backStack.add(Route.Search) },
                                     onOpenAccountSwitcher = { showAccountSwitcher = true },
+                                    onOpenTodoList = { backStack.add(Route.TodoList) },
                                     onOpenJoinPreview = { roomId, isSpace ->
                                         backStack.add(Route.JoinRoom(roomId, emptyList(), isSpace = isSpace))
                                     },
@@ -766,6 +767,7 @@ private fun AppContent(
                                     onOpenJoinPreview = { roomId, isSpace ->
                                         backStack.add(Route.JoinRoom(roomId, emptyList(), isSpace = isSpace))
                                     },
+                                    onOpenTodoList = { backStack.add(Route.TodoList) },
                                 )
                             }
 
@@ -1373,6 +1375,12 @@ private fun AppContent(
                                 onOpenMessage = { roomId, eventId, roomName ->
                                     backStack.add(Route.Room(roomId, roomName, eventId))
                                 }
+                            )
+                        }
+
+                        entry<Route.TodoList> {
+                            TodoListRoute(
+                                onBack = backStack::popBack,
                             )
                         }
 

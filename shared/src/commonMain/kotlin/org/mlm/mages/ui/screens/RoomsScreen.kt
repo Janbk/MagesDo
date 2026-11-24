@@ -138,6 +138,7 @@ fun RoomsScreen(
                     inviteCount = state.inviteItems.size,
                     onOpenSearch = onOpenSearch,
                     onOpenAccountSwitcher = onOpenAccountSwitcher,
+                    onOpenTodoList = onOpenTodoList,
                 )
             }
         },
@@ -521,7 +522,8 @@ private fun RoomsTopBar(
     onOpenSecurity: () -> Unit,
     onOpenStartChat: () -> Unit,
     onOpenSearch: () -> Unit,
-    onOpenAccountSwitcher: () -> Unit
+    onOpenAccountSwitcher: () -> Unit,
+    onOpenTodoList: () -> Unit
 ) {
     Column {
         TopAppBar(
@@ -554,6 +556,9 @@ private fun RoomsTopBar(
                 }
                 IconButton(onClick = onOpenSearch) {
                     Icon(painterResource(Res.drawable.ic_search), stringResource(Res.string.search_messages))
+                }
+                IconButton(onClick = onOpenTodoList) {
+                    Icon(painterResource(Res.drawable.ic_checklist), "Todo List")
                 }
                 if (showSwitchAccountButton) {
                     IconButton(onClick = onOpenAccountSwitcher) {
